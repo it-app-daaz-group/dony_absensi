@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../utils/prisma';
 import bcrypt from 'bcrypt';
 import { generateTokens, sendRefreshToken, verifyRefreshToken } from '../utils/jwt';
 import { AuthRequest } from '../middlewares/auth.middleware';
 
-const prisma = new PrismaClient();
+//
 
 export const login = async (req: Request, res: Response) => {
   try {

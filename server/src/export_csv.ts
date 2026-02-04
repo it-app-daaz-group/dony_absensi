@@ -1,9 +1,9 @@
 
-import { PrismaClient } from '@prisma/client';
+import prisma from './utils/prisma';
 import * as fs from 'fs';
 import * as path from 'path';
 
-const prisma = new PrismaClient();
+//
 
 async function main() {
   const outputDir = path.join(__dirname, '../../csv_export');
