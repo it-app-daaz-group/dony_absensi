@@ -1,0 +1,10 @@
+{
+  "name": "dony-absensi-root",
+  "private": true,
+  "scripts": {
+    "build": "cd client && npm install && npm run build"
+  },
+  "engines": {
+    "node": "20.x"
+  }
+}
