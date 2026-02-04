@@ -11,6 +11,7 @@ import ShiftList from './pages/ShiftList';
 import ShiftForm from './pages/ShiftForm';
 import HolidayList from './pages/HolidayList';
 import HolidayForm from './pages/HolidayForm';
+import Dashboard from './pages/Dashboard';
 import { useAuthStore } from './store/authStore';
 import { Spin, Layout, Menu, Button } from 'antd';
 import { UserOutlined, DashboardOutlined, LogoutOutlined, TeamOutlined, IdcardOutlined, CalendarOutlined, ClockCircleOutlined } from '@ant-design/icons';
@@ -109,8 +110,7 @@ function App() {
         <Route path="/dashboard" element={
           <ProtectedRoute>
             <MainLayout>
-              <h1>Dashboard</h1>
-              <p>Selamat datang di Aplikasi Absensi.</p>
+              <Dashboard />
             </MainLayout>
           </ProtectedRoute>
         } />

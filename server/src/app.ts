@@ -11,6 +11,7 @@ import positionRoutes from './routes/position.routes';
 import holidayRoutes from './routes/holiday.routes';
 import masterRoutes from './routes/master.routes';
 import shiftRoutes from './routes/shift.routes';
+import dashboardRoutes from './routes/dashboard.routes';
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ app.use('/api/departments', departmentRoutes);
 app.use('/api/positions', positionRoutes);
 app.use('/api/holidays', holidayRoutes);
 app.use('/api/shifts', shiftRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/master', masterRoutes);
 
 app.get('/', (req: Request, res: Response) => {
