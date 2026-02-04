@@ -1,0 +1,133 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// --- MASTER DATA ---
+
+model Department {
+  id        Int        @id @default(autoincrement())
+  name      String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  employees Employee[]
+}
+
+model Position {
+  id        Int        @id @default(autoincrement())
+  name      String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  employees Employee[]
+}
+
+model Shift {
+  id            Int        @id @default(autoincrement())
+  name          String     // e.g., "Shift Pagi", "Non-Shift"
+  startTime     String     // Format "HH:mm" e.g., "08:00"
+  endTime       String     // Format "HH:mm" e.g., "17:00"
+  lateTolerance Int        @default(15) // Menit toleransi
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  employees     Employee[]
+}
+
+model Employee {
+  id           Int      @id @default(autoincrement())
+  nik          String   @unique
+  name         String
+  email        String?  @unique
+  password     String   // Bcrypt hash
+  phone        String?
+  address      String?
+  photoUrl     String?
+  isActive     Boolean  @default(true)
+  
+  departmentId Int?
+  department   Department? @relation(fields: [departmentId], references: [id])
+  
+  positionId   Int?
+  position     Position?   @relation(fields: [positionId], references: [id])
+  
+  shiftId      Int?
+  shift        Shift?      @relation(fields: [shiftId], references: [id])
+
+  attendances  AttendanceRecord[]
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([departmentId])
+  @@index([positionId])
+}
+
+// --- SETTINGS ---
+
+model AttendanceRule {
+  id                Int     @id @default(autoincrement())
+  companyLat        Float   // Latitude Pusat
+  companyLng        Float   // Longitude Pusat
+  radiusKm          Float   @default(0.1) // Radius toleransi dalam KM
+  overtimeMinHours  Int     @default(1)   // Minimal jam untuk dihitung lembur
+  overtimeRate      Float   @default(1.5) // Multiplier gaji lembur
+  
+  updatedAt         DateTime @updatedAt
+}
+
+model Holiday {
+  id          Int      @id @default(autoincrement())
+  date        DateTime @unique
+  description String
+}
+
+// --- TRANSACTIONS ---
+
+enum AttendanceStatus {
+  PRESENT
+  LATE
+  ABSENT
+  SICK
+  PERMISSION
+  BUSINESS_TRIP
+}
+
+model AttendanceRecord {
+  id              Int              @id @default(autoincrement())
+  employeeId      Int
+  employee        Employee         @relation(fields: [employeeId], references: [id])
+  
+  date            DateTime         @db.Date // Tanggal absensi (untuk grouping)
+  
+  checkInTime     DateTime?
+  checkOutTime    DateTime?
+  
+  checkInPhoto    String?
+  checkOutPhoto   String?
+  
+  checkInLat      Float?
+  checkInLng      Float?
+  checkOutLat     Float?
+  checkOutLng     Float?
+  
+  status          AttendanceStatus @default(ABSENT)
+  isLate          Boolean          @default(false)
+  lateDuration    Int              @default(0) // Dalam menit
+  
+  workDuration    Int              @default(0) // Dalam menit (effective hours)
+  overtimeDuration Int             @default(0) // Dalam menit
+  
+  notes           String?          @db.Text
+  
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  @@unique([employeeId, date]) // Satu karyawan max 1 record per hari
+  @@index([date])
+}

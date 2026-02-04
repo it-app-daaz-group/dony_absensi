@@ -1,0 +1,3 @@
+id,nik,name,email,password,phone,address,photoUrl,isActive,departmentId,positionId,shiftId,createdAt,updatedAt
+1,"ADMIN001","Super Admin","admin@company.com","$2b$10$W.6e7UDaKXJTgcBHqA7ZmeR99uor3ZTkG03MAiq3DjLzOD6pRLBA6",NULL,NULL,NULL,1,1,1,1,"2026-02-03T04:03:18.810Z","2026-02-03T04:03:18.810Z"
+5,"2026125","Dony Ariyanto","dony.ariyanto@apexindo.com","$2b$10$Yliz5/wyAPSsHJQxF6eUMeTp39onJkuiuC7AGQYXCbWOYeQLJ5NSW",NULL,NULL,NULL,1,1,1,1,"2026-02-03T04:57:42.885Z","2026-02-03T04:57:54.833Z"
